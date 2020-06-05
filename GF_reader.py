@@ -16,6 +16,7 @@ class Duration():
             self.d = (float(self.h) * 60 + float(self.m))
         else:
             print("请输入有效时长! \n")
+            time.sleep(5)
             raise ValueError
         
     def show(self):
@@ -28,7 +29,7 @@ def read_csv(cate_dict, tlist, rlist, path ='GF.csv'):
         for i,row in enumerate(reader):
             if i != 0:
                 row = row
-                cate_dict[i] = row[0]+""+row[1]
+                cate_dict[i-1] = row[0]+""+row[1]
                 tlist.append(row[2])
 
                 for ii in range(3,7):
@@ -58,7 +59,10 @@ def time_limitation (durations, tlist, resources, max_duration):
 
 
 
-
+def sheet(cate_dict,tlist,rlist):
+    print("|    后勤编号    |    时长    | 人力 | 弹药 | 口粮 | 零件 ")
+    for i in range(len(tlist)):
+        print("| %10s | %10s | %4d | %4d | %4d | %4d "%(cate_dict[i],tlist[i],rlist[0][i],rlist[1][i],rlist[2][i],rlist[3][i]))
 
 
 
