@@ -130,7 +130,7 @@ while (True):
             
             print("后勤任务列表：")
             print(cate_dict[idx[0]]," ",cate_dict[idx[1]]," ",cate_dict[idx[2]]," ",cate_dict[idx[3]])
-            print("%5d 分钟内可获取最大口粮资源:  | 人力 | 弹药 | 口粮 | 零件 "%(Duration(input_time).d))
+            print("%5d 分钟内可获取最大零件资源:  | 人力 | 弹药 | 口粮 | 零件 "%(Duration(input_time).d))
             print("                                 | %4d | %4d | %4d | %4d "%(manpower,ammo,mre,part))
             print("")
 
