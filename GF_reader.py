@@ -2,6 +2,8 @@
 
 import csv
 import numpy as np
+import time
+from os import system
 
 class Duration():
     d = 0.0
@@ -23,8 +25,8 @@ class Duration():
         print("%d minutes"%(self.d))
 
 
-def read_csv(cate_dict, tlist, rlist, path ='GF.csv'):
-    with open(path,'r',encoding="UTF-8") as csvfile:
+def read_csv(cate_dict, tlist, rlist, path_name):
+    with open(path_name,'r',encoding="UTF-8") as csvfile:
         reader = csv.reader(csvfile)
         for i,row in enumerate(reader):
             if i != 0:
@@ -60,9 +62,19 @@ def time_limitation (durations, tlist, resources, max_duration):
 
 
 def sheet(cate_dict,tlist,rlist):
-    print("|    后勤编号    |    时长    | 人力 | 弹药 | 口粮 | 零件 ")
+    print("    |    后勤编号    |    时长    | 人力 | 弹药 | 口粮 | 零件 ")
     for i in range(len(tlist)):
-        print("| %10s | %10s | %4d | %4d | %4d | %4d "%(cate_dict[i],tlist[i],rlist[0][i],rlist[1][i],rlist[2][i],rlist[3][i]))
+        print("    | %10s | %10s | %4d | %4d | %4d | %4d "%(cate_dict[i],tlist[i],rlist[0][i],rlist[1][i],rlist[2][i],rlist[3][i]))
 
 
+def print_list(idx,cate_dict,tlist,rlist,manpower,ammo,mre,part):
+    print("    |    后勤编号    |    时长    | 人力 | 弹药 | 口粮 | 零件 ")
+    for i in range(4):
+        print("    | %10s | %10s | %4d | %4d | %4d | %4d "%(cate_dict[idx[i]],tlist[idx[i]],rlist[0][idx[i]],\
+            rlist[1][idx[i]],rlist[2][idx[i]],rlist[3][idx[i]]))
+    print("    |      合计      |            | %4d | %4d | %4d | %4d "%(manpower,ammo,mre,part))
+
+        
+def clear():
+    system('cls')
 
