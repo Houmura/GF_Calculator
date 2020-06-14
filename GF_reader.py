@@ -9,8 +9,13 @@ class Duration():
     d = 0.0
     def __init__(self,tlist):
         self.tlist = tlist
-        self.h = self.tlist.split(":")[0]
-        self.m = self.tlist.split(":")[1]
+        if (tlist.split(":")[0][0] == "0") and (len(tlist.split(":")[0]) != 1):   
+            self.h = self.tlist.split(":")[0][1:]
+            self.m = self.tlist.split(":")[1]
+        else:
+            self.h = self.tlist.split(":")[0]
+            self.m = self.tlist.split(":")[1]
+
         if len(tlist.split(":")) == 3:
             self.s = self.tlist.split(":")[2]
             self.d = (float(self.h) * 60 + float(self.m) + float(self.s)/60.0)
@@ -74,7 +79,19 @@ def print_list(idx,cate_dict,tlist,rlist,manpower,ammo,mre,part):
             rlist[1][idx[i]],rlist[2][idx[i]],rlist[3][idx[i]]))
     print("    |      合计      |            | %4d | %4d | %4d | %4d "%(manpower,ammo,mre,part))
 
-        
+
+def cal_total_max_idx(durations, tlist, rlist, max_duration):
+    total = []
+    for i in range(len(tlist)):
+        total.append(3*rlist[0][i]+3*rlist[1][i]+3*rlist[2][i]+rlist[3][i])  
+    for i in range(len(tlist)):
+        if durations[i] > max_duration:
+            total[i] = 0.0
+    total = np.array(total)
+    idx = np.argsort(total)[-4:]
+    return idx
+
+
 def clear():
     system('cls')
 

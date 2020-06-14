@@ -14,7 +14,7 @@ print("    * 请输入后勤数据表名称(默认为GF.csv)              *")
 print("    * 并将其放置在本程序所在目录下                    *")
 print("    *                                                 *")
 print("    ***************************************************")
-print("    确认无误后请按任意键继续...")
+print("    确认无误后请按回车键继续...")
 path_name=input()
 if path_name == "":
     path_name = "GF.csv"
@@ -25,10 +25,11 @@ while (True):
 
     cate_dict = {}
     # [[每关人力],[每关弹药],[每关口粮],[每关零件]]
-    rlist = [[] for i in range(4)]  
+    rlist = [[] for i in range(4)]
+    # rlist 形状: (4, 关卡数)  
     tlist = []
 
-    durations = read_csv(cate_dict, tlist, rlist,path_name)
+    durations = read_csv(cate_dict, tlist, rlist, path_name)
 
     # 转换rlist为 numpy array 方便后续操作
     resources = np.array(rlist)
@@ -40,7 +41,7 @@ while (True):
     print("    *                                                 *")
     print("    *                                                 *")
     print("    *                                                 *")
-    print("    *  请选择一项功能，输入对应编号:                  *")
+    print("    *  请选择一项功能，输入对应编号并按回车键继续:    *")
     print("    *                                                 *")
     print("    *   1 - 计算后勤收益         2 - 后勤收益一览     *")
     print("    *                                                 *")
@@ -51,8 +52,12 @@ while (True):
     if type_cal == "1":
 
         clear()
-        print("\n    请输入后勤时长，例如:  0:30（英文冒号） 代表0小时30分钟，回车键确认")
+        print("\n    请输入后勤时长，例如:  0:30 代表0小时30分钟，回车键确认")
+
         input_time = input("    ")
+        if "：" in input_time:
+            input_time = input_time.replace("：",":")
+        
         print("\n    您输入的时长为：",input_time,"\n") 
         print("    即 ",Duration(input_time).d," 分钟\n")
 
@@ -60,12 +65,11 @@ while (True):
         print("    *          少 女 前 线 后 勤 计 算 器             *")
         print("    *                                                 *")
         print("    *                                                 *")
-        print("    *                                                 *")
-        print("    *  请选择哪一项资源优先，输入对应编号:            *")
-        print("    *                                                 *")
+        print("    *  请选择哪一项资源优先，输入对应编号并按回车     *")
+        print("    *  键继续                                         *")
         print("    *       1 - 人力                2 - 弹药          *")
         print("    *       3 - 口粮                4 - 零件          *")
-        print("    *                                                 *")
+        print("    *       5 - 四项资源最大化(默认)                  *")
         print("    ***************************************************")
         input_type = input("    ")
         print("\n    后勤时长：", Duration(input_time).d," 分钟\n")
@@ -154,6 +158,21 @@ while (True):
             print("    %5d 分钟内可获取最大零件资源:"%(Duration(input_time).d))
             print_list(idx,cate_dict,tlist,rlist,manpower,ammo,mre,part)
             print("")
+
+        elif (input_type == "5") or (input_type == ""):
+            idx = cal_total_max_idx(durations, tlist, rlist, Duration(input_time).d)
+            for j in range(4):
+                manpower += rlist[0][idx[j]]
+                ammo += rlist[1][idx[j]]
+                mre += rlist[2][idx[j]]
+                part += rlist[3][idx[j]]
+
+            print("    后勤任务列表：")
+            print("    ",cate_dict[idx[0]]," ",cate_dict[idx[1]]," ",cate_dict[idx[2]]," ",cate_dict[idx[3]])
+            print("    %5d 分钟内可获取最大四项资源:"%(Duration(input_time).d))
+            print_list(idx,cate_dict,tlist,rlist,manpower,ammo,mre,part)
+            print("")
+
 
         else:
             print("请输入正确编号! \n")
